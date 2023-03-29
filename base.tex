@@ -1,0 +1,178 @@
+\documentclass[a4paper, 10pt, DIV=8, draft]{scrartcl}
+% ----- ENVIRONMENTS AND OTHER BASICS ----- %
+% ---- set up author, title and date ----- %
+\author{% Author
+}
+\title{% Title
+\blfootnote{% Footnote title
+}}
+
+\newlength{\afourwiddth}
+\setlength{\afourwiddth}{210mm}
+\newlength{\afourheigght}
+\setlength{\afourheigght}{297mm}
+% simulate the typesetting area of DIV=8 of a4paper
+% (i.e. 5/8 of the height and width of the paper are used for typesetting)
+% in a letterpaper this is purely for printing purposes
+% also use a large right margin for nicer "todo" notes
+% also for some reason the name `afourwidth` is already reserved, so I added a misspelling.
+\usepackage
+  [ letterpaper
+  , textwidth = .625\afourwiddth
+  , textheight = .625\afourheigght
+  , right = 65mm
+  ]{geometry}
+
+
+% ----- set the language of the document ----- %
+\usepackage[english]{babel}
+
+% ------ ott ----- %
+\usepackage{listproc}
+\usepackage{mathpartir}
+\renewcommand{\RightTirName}[1]{#1} % Changes labels to math mode
+\usepackage{ottalt}
+\inputott[dmGL]{spec/dmGL-inc}
+\usepackage{pgffor}
+\makeatletter
+
+\newcommand*{\namedrule}[2][\relax]{%
+  \def\pr@fix{#1XX}%
+  \def\n@me{#2}%
+  \edef\ou@t{\expandafter\noexpand\csname dmGLdrule\pr@fix\n@me\endcsname}%
+  \ou@t{}
+}
+
+\newcommand*{\pprules}[2][\relax]{%
+  \small
+  \begin{mathpar}
+    \foreach \@iter in {#2}{%
+      \namedrule[#1]{\@iter}
+      \and
+    }
+  \end{mathpar}%
+}
+\makeatother
+
+% ----- set up most basic packages ----- %
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{thm-restate}
+\usepackage{amssymb}
+\usepackage{cleveref}
+\usepackage{mathtools}
+\usepackage{microtype}
+\usepackage{graphicx}
+
+\let\newlist\relax
+\let\renewlist\relax
+\usepackage{enumitem}
+\usepackage[x11names]{xcolor}
+\usepackage{mdframed}
+
+% ----- set up font ----- %
+\usepackage[T1]{fontenc}
+\usepackage{mlmodern}
+% looks like the default font, but a little bolder
+% better for on-screen reading imo
+
+% ----- set special math fonts: calligraphic, double-stroked and fraktur ----- %
+\usepackage[ cal=txupr  , calscaled=1.0
+           , bb=px      , bbscaled=1.0
+           , frak=euler , frakscaled=1.0
+           ]{mathalfa}
+
+%\renewcommand*{\mathcal}{\mathbcal}
+
+% ----- set up AMS Theorem ----- %
+\addto\captionsenglish{\renewcommand{\proofname}{\normalfont\textsc{Proof.}}}
+% makes head of proof environments smallcaps
+
+\def\thmPunct{}
+\def\thmSpace{1em}
+\newtheoremstyle{atom}{}{}{\upshape}{0pt}{}{\thmPunct}{\thmSpace}%
+{{\bfseries\thmname{#1 }\thmnumber{#2}}{\bfseries\sffamily\thmnote{ \color{SlateBlue4}$ \blacktriangleright $ #3}}}
+
+\theoremstyle{atom}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lem}[theorem]{Lemma}
+\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{cor}[theorem]{Corollary}
+
+\newtheorem{defn}[theorem]{Definition}
+\newtheorem{nota}[theorem]{Notation}
+\newtheorem{warn}[theorem]{Warning}
+
+\newtheorem{exmp}[theorem]{Example}
+\newtheorem{constr}[theorem]{Construction}
+\newtheorem{rem}[theorem]{Remark}
+\newtheorem{idea}[theorem]{Idea}
+
+%\theoremstyle{wip}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{conj}[theorem]{Conjecture}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{garbage}[theorem]{Garbage}
+\newtheorem{goal}[theorem]{Goal}
+
+\newtheorem{atom}[theorem]{}
+
+% ----- BASIC COMMANDS AND PACKAGES ----- %
+% ----- common commands ----- %
+\newcommand*{\mb}{\mathbf}
+\newcommand*{\mc}{\mathcal}
+\newcommand*{\mf}{\mathfrak}
+\newcommand*{\ms}{\mathsf}
+\newcommand*{\mbb}{\mathbb}
+\newcommand*{\N}{\mb N}
+\newcommand*{\Z}{\mb Z}
+\newcommand*{\Q}{\mb Q}
+\newcommand*{\R}{\mb R}
+\newcommand*{\C}{\mb C}
+\newcommand*{\F}{\mb F}
+\newcommand*{\set}[2]{\left\lbrace #1 \mid #2 \right\rbrace}
+% use syntax \set{#X}{#condition} to generate set that looks like {x : condition(x)}.
+
+% ----- COSMETICS ----- %
+% ----- make \emph boldface ----- %
+%\let\emph\relax
+%\DeclareTextFontCommand{\emph}{\bfseries\em}
+
+% ----- Blank footnote for footnote title ----- %
+\makeatletter
+\def\blfootnote{\xdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+
+% ----- USE TIKZ ----- %
+\usepackage{tikz}
+\usetikzlibrary{cd}     % tikzcd -- package for commutative diagrams
+\usetikzlibrary{babel}  % tikz does not interact well with non-english babel
+\usetikzlibrary{arrows.meta,decorations.pathmorphing,backgrounds,positioning,fit,petri}
+% ^-- general imports, allows most common drawings in tikz
+\tikzcdset
+  { arrow style = tikz
+  , diagrams = {> = {Straight Barb[scale = 0.8]}}
+  } % change the style of arrows to look good with most fonts.
+
+
+% ----- to do notes ----- %
+\usepackage{todonotes}
+\setlength{\marginparwidth}{5cm}
+\newcommand{\todoi}[1]{\todo[inline,linecolor=black, backgroundcolor=gray!30!white, bordercolor=black, textcolor=black]{#1}}
+\newcommand{\todom}[1]{\todo[linecolor=black, backgroundcolor=gray!30!white, bordercolor=black, textcolor=black]{#1}}
+
+% ----- set up bibliography ----- %
+\bibliographystyle{plain}
+
+
+\begin{document}
+
+
+
+
+
+
+
+\end{document}
