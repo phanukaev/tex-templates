@@ -1,12 +1,6 @@
-\documentclass[a4paper, 10pt, DIV=8, draft]{scrartcl}
-% ----- ENVIRONMENTS AND OTHER BASICS ----- %
-% ---- set up author, title and date ----- %
-\author{% Author
-}
-\title{% Title
-\blfootnote{% Footnote title
-}}
+\documentclass[a4paper, 10pt, DIV=8]{scrartcl}
 
+% ----- typesetting area ----- %
 \newlength{\afourwiddth}
 \setlength{\afourwiddth}{210mm}
 \newlength{\afourheigght}
@@ -24,37 +18,10 @@
   ]{geometry}
 
 
-% ----- set the language of the document ----- %
+% ----- language ----- %
 \usepackage[english]{babel}
 
-% ------ ott ----- %
-\usepackage{listproc}
-\usepackage{mathpartir}
-\renewcommand{\RightTirName}[1]{#1} % Changes labels to math mode
-\usepackage{ottalt}
-\inputott[dmGL]{spec/dmGL-inc}
-\usepackage{pgffor}
-\makeatletter
-
-\newcommand*{\namedrule}[2][\relax]{%
-  \def\pr@fix{#1XX}%
-  \def\n@me{#2}%
-  \edef\ou@t{\expandafter\noexpand\csname dmGLdrule\pr@fix\n@me\endcsname}%
-  \ou@t{}
-}
-
-\newcommand*{\pprules}[2][\relax]{%
-  \small
-  \begin{mathpar}
-    \foreach \@iter in {#2}{%
-      \namedrule[#1]{\@iter}
-      \and
-    }
-  \end{mathpar}%
-}
-\makeatother
-
-% ----- set up most basic packages ----- %
+% ----- basic packages ----- %
 \usepackage{hyperref}
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -64,42 +31,37 @@
 \usepackage{mathtools}
 \usepackage{microtype}
 \usepackage{graphicx}
-
-\let\newlist\relax
-\let\renewlist\relax
 \usepackage{enumitem}
 \usepackage[x11names]{xcolor}
 \usepackage{mdframed}
 
-% ----- set up font ----- %
+% ----- font ----- %
 \usepackage[T1]{fontenc}
 \usepackage{mlmodern}
-% looks like the default font, but a little bolder
-% better for on-screen reading imo
+% looks like the default font but slightly bolder, better for on-screen reading imo
 
-% ----- set special math fonts: calligraphic, double-stroked and fraktur ----- %
+% ----- math fonts: calligraphic, double-stroked and fraktur ----- %
 \usepackage[ cal=txupr  , calscaled=1.0
            , bb=px      , bbscaled=1.0
            , frak=euler , frakscaled=1.0
            ]{mathalfa}
 
-%\renewcommand*{\mathcal}{\mathbcal}
-
 % ----- set up AMS Theorem ----- %
 \addto\captionsenglish{\renewcommand{\proofname}{\normalfont\textsc{Proof.}}}
 % makes head of proof environments smallcaps
 
-\def\thmPunct{}
-\def\thmSpace{1em}
+\def\thmPunct{.}
+\def\thmSpace{.7em}
 \newtheoremstyle{atom}{}{}{\upshape}{0pt}{}{\thmPunct}{\thmSpace}%
 {{\bfseries\thmname{#1 }\thmnumber{#2}}{\bfseries\sffamily\thmnote{ \color{SlateBlue4}$ \blacktriangleright $ #3}}}
 
-\theoremstyle{atom}
+\theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lem}[theorem]{Lemma}
 \newtheorem{prop}[theorem]{Proposition}
 \newtheorem{cor}[theorem]{Corollary}
 
+\theoremstyle{atom}
 \newtheorem{defn}[theorem]{Definition}
 \newtheorem{nota}[theorem]{Notation}
 \newtheorem{warn}[theorem]{Warning}
@@ -109,7 +71,6 @@
 \newtheorem{rem}[theorem]{Remark}
 \newtheorem{idea}[theorem]{Idea}
 
-%\theoremstyle{wip}
 \newtheorem{question}[theorem]{Question}
 \newtheorem{conj}[theorem]{Conjecture}
 \newtheorem{problem}[theorem]{Problem}
@@ -118,7 +79,6 @@
 
 \newtheorem{atom}[theorem]{}
 
-% ----- BASIC COMMANDS AND PACKAGES ----- %
 % ----- common commands ----- %
 \newcommand*{\mb}{\mathbf}
 \newcommand*{\mc}{\mathcal}
@@ -127,14 +87,9 @@
 \newcommand*{\mbb}{\mathbb}
 \newcommand*{\N}{\mb N}
 \newcommand*{\Z}{\mb Z}
-\newcommand*{\Q}{\mb Q}
-\newcommand*{\R}{\mb R}
-\newcommand*{\C}{\mb C}
-\newcommand*{\F}{\mb F}
 \newcommand*{\set}[2]{\left\lbrace #1 \mid #2 \right\rbrace}
 % use syntax \set{#X}{#condition} to generate set that looks like {x : condition(x)}.
 
-% ----- COSMETICS ----- %
 % ----- make \emph boldface ----- %
 %\let\emph\relax
 %\DeclareTextFontCommand{\emph}{\bfseries\em}
@@ -143,7 +98,6 @@
 \makeatletter
 \def\blfootnote{\xdef\@thefnmark{}\@footnotetext}
 \makeatother
-
 
 % ----- USE TIKZ ----- %
 \usepackage{tikz}
@@ -160,19 +114,38 @@
 % ----- to do notes ----- %
 \usepackage{todonotes}
 \setlength{\marginparwidth}{5cm}
-\newcommand{\todoi}[1]{\todo[inline,linecolor=black, backgroundcolor=gray!30!white, bordercolor=black, textcolor=black]{#1}}
-\newcommand{\todom}[1]{\todo[linecolor=black, backgroundcolor=gray!30!white, bordercolor=black, textcolor=black]{#1}}
+\newcommand{\todoi}[1]{%
+  \todo[inline,linecolor=black, backgroundcolor=gray!30!white, bordercolor=black, textcolor=black]{#1}%
+}
+\newcommand{\todom}[1]{%
+  \todo[linecolor=black, backgroundcolor=gray!30!white, bordercolor=black, textcolor=black]{#1}%
+}
 
 % ----- set up bibliography ----- %
 \bibliographystyle{plain}
 
+% ----- code listings ----- %
+\usepackage[outputdir=build]{minted}
+% needs pygmentize, see document
+
+\newminted[code]{text}{autogobble}
+\newmintinline[icode]{text}{}
+%default environments with no syntax highlighting
+
+% ---- set up author, title and date ----- %
+\author{Peter Hanukaev}
+\title{Basic \LaTeX{} Template%
+  \blfootnote{Version 2023-03-28}
+}
+
+
+
 
 \begin{document}
 
+\maketitle
 
-
-
-
+\input{content.tex}
 
 
 \end{document}
